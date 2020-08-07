@@ -58,8 +58,23 @@ class SimpleEditor {
 }
 
 let editor = new SimpleEditor(state)
+let editor2 = new SimpleEditor(state)
 
-document.body.appendChild(editor.ta)
+function el(type) {
+	let classes = []
+	type = type.replace(/\.([^.]*)/g, (_, className) => {
+		classes.push(className); return ''
+	})
+	let result = document.createElement(type)
+	result.className = classes.join(' ')
+	return result
+}
+
+let windows = el('div.windows')
+document.body.appendChild(windows)
+
+windows.appendChild(editor.ta)
+windows.appendChild(editor2.ta)
 
 if (state.currentFile) {
 	editor.open(state.currentFile)

@@ -2,16 +2,31 @@ html, body {
 	height: 100%;
 }
 
+/* variables */
+
+body {
+	--gap: 3px;
+}
+
 * {
 	margin: 0;
 	box-sizing: border-box;
 }
 
 body {
-	padding: 5px;
-	display: grid;
+	padding: var(--gap);
+}
+
+body > .windows {
+	display: flex;
+	height: 100%;
+}
+
+.windows > *:not(:first-child) {
+	margin-left: var(--gap);
 }
 
 textarea {
 	tab-size: 4;
+	flex: 1;
 }

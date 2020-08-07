@@ -1,25 +1,39 @@
 let fs = require('fs')
 
-let ta = document.createElement('textarea')
-let filename
-
-function open(name) {
-	filename = name
-	ta.value = fs.readFileSync(filename, 'utf8')
+let state = {
+  currentFile: ''
 }
 
-ta.addEventListener('keydown', e => {
+class SimpleEditor {
+  constructor(globalState) {
+    this.globalState = globalState
+    this.filename = null
+    this.ta = document.createElement('textarea')
+    this.ta.setAttribute('spellcheck', 'false')
+    this.ta.addEventListener('keydown', e => {
 	if (e.metaKey && e.key === 's') {
-		save()
-		alert('file ' + filename + ' saved!')
+		this.save()
+		alert('file ' + this.filename + ' saved!')
 	}
-})
+    })
+  }
 
-function save() {
-	fs.writeFileSync(filename, ta.value, 'utf8')
+  open(name) {
+	this.filename = name
+    this.globalState.currentFile = name
+	this.ta.value = fs.readFileSync(this.filename, 'utf8')
+  }
+
+  save() {
+	fs.writeFileSync(this.filename, this.ta.value, 'utf8')
+  }
 }
 
+let editor = new SimpleEditor(state)
 
-document.body.appendChild(ta)
+document.body.appendChild(editor.ta)
 
-open('editor.js')
+editor.open('editor.js')
+
+
+

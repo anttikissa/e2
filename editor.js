@@ -9,6 +9,10 @@ try {
 } catch (e) {
 }
 
+window.addEventListener('beforeunload', () => {
+	fs.writeFileSync('.e-state', JSON.stringify(state, null, 4), 'utf8')
+})
+
 class SimpleEditor {
   constructor(globalState) {
     this.globalState = globalState

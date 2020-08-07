@@ -1,0 +1,15 @@
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+}
+
+* {
+  margin: 0;
+}
+
+textarea {
+  flex: 1;
+}

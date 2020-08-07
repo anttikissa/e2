@@ -21,7 +21,11 @@ class SimpleEditor {
   open(name) {
 	this.filename = name
     this.globalState.currentFile = name
+    try {
 	this.ta.value = fs.readFileSync(this.filename, 'utf8')
+    } catch (e) {
+  this.ta.value = ''
+    }
   }
 
   save() {

@@ -1,7 +1,12 @@
 let fs = require('fs')
 
 let state = {
-  currentFile: ''
+  currentFile: null
+}
+
+try {
+  state = JSON.parse(fs.readFileSync('.e-state', 'utf8'))
+} catch (e) {
 }
 
 class SimpleEditor {
@@ -37,7 +42,12 @@ let editor = new SimpleEditor(state)
 
 document.body.appendChild(editor.ta)
 
-editor.open('editor.js')
+if (state.currentFile) {
+  editor.open(state.currentFile)
+}
 
+function o(name) {
+  editor.open(name)
+}
 
 

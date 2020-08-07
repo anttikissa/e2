@@ -31,7 +31,8 @@ class SimpleEditor {
 	this.filename = name
     this.globalState.currentFile = name
     try {
-	this.ta.value = fs.readFileSync(this.filename, 'utf8')
+      let file = fs.readFileSync(this.filename, 'utf8')
+      this.ta.value = file.replace(/( )( )/g, '\t')
     } catch (e) {
   this.ta.value = ''
     }

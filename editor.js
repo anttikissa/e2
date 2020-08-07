@@ -21,3 +21,5 @@ function save() {
 
 
 document.body.appendChild(ta)
+
+open('editor.js')

@@ -107,9 +107,28 @@ class SimpleEditor {
 	}
 
 	close() {
-		window.editors = window.editors.filter(
-			editor => editor !== this)
+		let findPreviousEditor = (editors) => {
+			let previousEditor = null
+			for (let editor of editors) {
+				if (editor === this) {
+					break
+				}
+				previousEditor = editor
+			}
+
+			return previousEditor
+		}
+
+		let editorToLeft = findPreviousEditor(window.editors)
+		let editorToRight = findPreviousEditor([...window.editors].reverse())
+		let editorToFocus = editorToLeft || editorToRight
+
+		window.editors = window.editors.filter(editor => editor !== this)
 		this.el.remove()
+
+		if (editorToFocus) {
+			editorToFocus.ta.focus()
+		}
 	}
 
 	save() {

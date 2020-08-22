@@ -34,6 +34,7 @@ body > .windows {
 
 .editor > textarea, .editor > input {
 	font-family: 'Iosevka light extended', monospace;
+	font-variant-ligatures: none;
 }
 
 .editor > *:not(:first-child) {

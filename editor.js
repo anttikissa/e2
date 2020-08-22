@@ -5,7 +5,7 @@ let { log } = console
 function el(type) {
 	let classes = []
 	type = type.replace(/\.([^.]*)/g, (_, className) => {
-		classes.push(className);
+		classes.push(className)
 		return ''
 	})
 	let result = document.createElement(type)

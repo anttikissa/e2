@@ -26,7 +26,12 @@ body > .windows {
 	margin-left: var(--gap);
 }
 
-textarea {
-	tab-size: 4;
+.editor {
 	flex: 1;
+}
+
+.editor > textarea {
+	tab-size: 4;
+	width: 100%;
+	height: 100%;
 }

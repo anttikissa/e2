@@ -2,6 +2,17 @@ let fs = require('fs')
 
 let { log } = console
 
+function el(type) {
+	let classes = []
+	type = type.replace(/\.([^.]*)/g, (_, className) => {
+		classes.push(className);
+		return ''
+	})
+	let result = document.createElement(type)
+	result.className = classes.join(' ')
+	return result
+}
+
 let state = {
 	currentFile: null
 }
@@ -19,7 +30,21 @@ class SimpleEditor {
 	constructor(globalState) {
 		this.globalState = globalState
 		this.filename = null
+
+		this.el = el('div.editor')
+
+		this.input = el('input')
+
+		this.el.appendChild(this.input)
+		this.input.addEventListener('keydown', (ev) => {
+			if (ev.key === 'Enter') {
+				this.open(this.input.value)
+			}
+		})
+
 		this.ta = document.createElement('textarea')
+		this.el.appendChild(this.ta)
+
 		this.ta.setAttribute('spellcheck', 'false')
 
 		this.ta.addEventListener('keydown', e => {
@@ -43,11 +68,13 @@ class SimpleEditor {
 
 	open(name) {
 		this.filename = name
+		this.input.value = name
 		this.globalState.currentFile = name
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
 			this.ta.value = file.replace(/( )( )/g, '\t')
 		} catch (e) {
+			log('open failed', e)
 			this.ta.value = ''
 		}
 	}
@@ -60,21 +87,12 @@ class SimpleEditor {
 let editor = new SimpleEditor(state)
 let editor2 = new SimpleEditor(state)
 
-function el(type) {
-	let classes = []
-	type = type.replace(/\.([^.]*)/g, (_, className) => {
-		classes.push(className); return ''
-	})
-	let result = document.createElement(type)
-	result.className = classes.join(' ')
-	return result
-}
-
 let windows = el('div.windows')
+
 document.body.appendChild(windows)
 
-windows.appendChild(editor.ta)
-windows.appendChild(editor2.ta)
+windows.appendChild(editor.el)
+windows.appendChild(editor2.el)
 
 if (state.currentFile) {
 	editor.open(state.currentFile)

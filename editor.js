@@ -53,12 +53,18 @@ class SimpleEditor {
 
 		this.ta.setAttribute('spellcheck', 'false')
 
+		this.el.addEventListener('keydown', ev => {
+			if (ev.metaKey && ev.key === 'w') {
+				ev.preventDefault()
+				this.close()
+			}
+		})
+
 		this.ta.addEventListener('keydown', e => {
 			log('keydown', e.key)
 
 			if (e.metaKey && e.key === 's') {
 				this.save()
-				alert('file ' + this.filename + ' saved!')
 			}
 
 			if (e.key === 'Tab') {
@@ -72,20 +78,37 @@ class SimpleEditor {
 		})
 	}
 
-	open(name) {
+	open(name = '') {
 		this.filename = name
 		this.input.value = name
+
+		if (!name) {
+			this.input.focus()
+			return
+		}
+
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
 			this.ta.value = file.replace(/( )( )/g, '\t')
+			this.ta.focus()
 		} catch (e) {
 			log('open failed', e)
 			this.ta.value = ''
 		}
 	}
 
+	close() {
+		window.editors = window.editors.filter(
+			editor => editor !== this)
+		this.el.remove()
+	}
+
 	save() {
+		if (!this.filename) {
+			return
+		}
 		fs.writeFileSync(this.filename, this.ta.value, 'utf8')
+		alert('file ' + this.filename + ' saved!')
 	}
 }
 
@@ -94,11 +117,25 @@ let windows = el('div.windows')
 
 document.body.appendChild(windows)
 
-let editors = []
+window.editors = []
 
-for (let file of state.currentFiles) {
+function open(filename) {
 	let editor = new SimpleEditor(state)
-	editors.push(editor)
+	window.editors.push(editor)
 	windows.appendChild(editor.el)
-	editor.open(file)
+	editor.open(filename)
 }
+
+for (let filename of state.currentFiles) {
+	open(filename)
+}
+
+window.addEventListener('keydown', (ev) => {
+	if (ev.metaKey && ev.key === 'w') {
+		ev.preventDefault()
+	}
+
+	if (ev.metaKey && ev.key === 'o') {
+		open()
+	}
+})

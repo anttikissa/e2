@@ -16,15 +16,19 @@ function el(type) {
 }
 
 let state = {
-	currentFile: null
+	currentFiles: []
 }
 
 try {
-	state = JSON.parse(fs.readFileSync('.e-state', 'utf8'))
+	let savedState = JSON.parse(fs.readFileSync('.e-state', 'utf8'))
+	state = { ...state, ...savedState }
 } catch (e) {
 }
 
 window.addEventListener('beforeunload', () => {
+	let files = editors.map(e => e.filename)
+	state.currentFiles = files
+
 	fs.writeFileSync('.e-state', JSON.stringify(state, null, 4), 'utf8')
 })
 
@@ -71,7 +75,6 @@ class SimpleEditor {
 	open(name) {
 		this.filename = name
 		this.input.value = name
-		this.globalState.currentFile = name
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
 			this.ta.value = file.replace(/( )( )/g, '\t')
@@ -86,23 +89,16 @@ class SimpleEditor {
 	}
 }
 
-let editor = new SimpleEditor(state)
-let editor2 = new SimpleEditor(state)
 
 let windows = el('div.windows')
 
 document.body.appendChild(windows)
 
-windows.appendChild(editor.el)
-windows.appendChild(editor2.el)
+let editors = []
 
-if (state.currentFile) {
-	editor.open(state.currentFile)
+for (let file of state.currentFiles) {
+	let editor = new SimpleEditor(state)
+	editors.push(editor)
+	windows.appendChild(editor.el)
+	editor.open(file)
 }
-
-function o(name) {
-	editor.open(name)
-}
-
-
-		

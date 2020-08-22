@@ -46,6 +46,15 @@ class SimpleEditor {
 			if (ev.key === 'Enter') {
 				this.open(this.input.value)
 			}
+
+			if (ev.key === 'Tab') {
+				ev.preventDefault()
+				let files = fs.readdirSync('.')
+				let matches = files.filter(file => file.startsWith(this.input.value))
+				if (matches.length) {
+					this.input.value = matches[0]
+				}
+			}
 		})
 
 		this.ta = document.createElement('textarea')

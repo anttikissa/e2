@@ -32,6 +32,10 @@ body > .windows {
 	flex-direction: column;
 }
 
+.editor > textarea, .editor > input {
+	font-family: 'Iosevka light extended', monospace;
+}
+
 .editor > *:not(:first-child) {
 	margin-top: var(--gap);
 }

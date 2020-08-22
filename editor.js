@@ -9,7 +9,9 @@ function el(type) {
 		return ''
 	})
 	let result = document.createElement(type)
-	result.className = classes.join(' ')
+	if (classes.length) {
+		result.className = classes.join(' ')
+	}
 	return result
 }
 

@@ -32,8 +32,53 @@ body > .windows {
 	flex-direction: column;
 }
 
-.editor > textarea, .editor > input {
+.editor {
+	position: relative;
+}
+
+.editor.unsaved::after {
+	position: absolute;
+	right: 0;
+	padding: 0 calc(2 * var(--gap));
+	content: 'unsaved';
+	color: red;
+
+	background: #ff000022;
+	background: repeating-linear-gradient(
+		-45deg,
+		#ff000044 0px,
+		#ff000044 2px,
+		transparent 2px,
+		transparent 4px
+	);
+
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+
+	height: 23px;
+
+	text-shadow:
+		1px -1px 2px #fff,
+		1px 1px 2px #fff,
+		-1px -1px 2px #fff,
+		-1px 1px 2px #fff;
+
+	line-height: 23px;
+	font-weight: 400;
+
+	box-sizing: border-box;
+}
+
+.editor {
 	font-family: 'Iosevka light extended', monospace;
+	font-variant-ligatures: none;
+
+	font-size: 13px;
+}
+
+.editor textarea, .editor input {
+	font-family: inherit;
+	font-size: inherit;
 	font-variant-ligatures: none;
 }
 
@@ -46,3 +91,4 @@ body > .windows {
 	width: 100%;
 	flex: 1;
 }
+

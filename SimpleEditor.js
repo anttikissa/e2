@@ -11,6 +11,8 @@ export class SimpleEditor {
 
 		this.el = el('div.editor')
 
+		this.el.classList.add('unsaved')
+
 		this.input = el('input')
 
 		this.el.appendChild(this.input)
@@ -113,4 +115,3 @@ export class SimpleEditor {
 		alert('file ' + this.filename + ' saved!')
 	}
 }
-

@@ -11,8 +11,6 @@ export class SimpleEditor {
 
 		this.el = el('div.editor')
 
-		this.el.classList.add('unsaved')
-
 		this.input = el('input')
 
 		this.el.appendChild(this.input)
@@ -24,7 +22,11 @@ export class SimpleEditor {
 			if (ev.key === 'Tab') {
 				ev.preventDefault()
 				let files = fs.readdirSync('.')
-				let matches = files.filter(file => file.toLowerCase().startsWith(this.input.value.toLowerCase()))
+				let matches = files.filter(file =>
+					file.toLowerCase().startsWith(
+						this.input.value.toLowerCase()
+					)
+				)
 				if (matches.length) {
 					this.input.value = matches[0]
 				}
@@ -33,6 +35,10 @@ export class SimpleEditor {
 
 		this.ta = document.createElement('textarea')
 		this.el.appendChild(this.ta)
+
+		this.ta.addEventListener('input', ev => {
+			this.updateUnsaved()
+		})
 
 		this.ta.setAttribute('spellcheck', 'false')
 
@@ -61,6 +67,10 @@ export class SimpleEditor {
 		})
 	}
 
+	updateUnsaved() {
+		this.el.classList.toggle('unsaved', this.ta.value !== this.fileContent)
+	}
+
 	open(name = '') {
 		this.filename = name
 		this.input.value = name
@@ -73,6 +83,7 @@ export class SimpleEditor {
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
 			this.ta.value = file.replace(/( )( )/g, '\t')
+			this.fileContent = file
 		} catch (e) {
 			alert(`Could not open ${this.filename}. Save to create it.`)
 			log('open failed', e)
@@ -111,7 +122,11 @@ export class SimpleEditor {
 		if (!this.filename) {
 			return
 		}
+
 		fs.writeFileSync(this.filename, this.ta.value, 'utf8')
+		this.fileContent = this.ta.value
+		this.updateUnsaved()
+
 		alert('file ' + this.filename + ' saved!')
 	}
 }

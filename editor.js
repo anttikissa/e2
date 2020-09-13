@@ -49,5 +49,3 @@ window.addEventListener('keydown', (ev) => {
 		open()
 	}
 })
-
-

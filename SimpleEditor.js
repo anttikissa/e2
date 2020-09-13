@@ -16,6 +16,7 @@ export class SimpleEditor {
 		this.el.appendChild(this.input)
 		this.input.addEventListener('keydown', (ev) => {
 			if (ev.key === 'Enter') {
+				ev.preventDefault()
 				this.open(this.input.value)
 			}
 

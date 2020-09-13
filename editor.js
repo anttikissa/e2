@@ -2,18 +2,7 @@ let fs = require('fs')
 
 let { log } = console
 
-function el(type) {
-	let classes = []
-	type = type.replace(/\.([^.]*)/g, (_, className) => {
-		classes.push(className)
-		return ''
-	})
-	let result = document.createElement(type)
-	if (classes.length) {
-		result.className = classes.join(' ')
-	}
-	return result
-}
+import { el } from './util.js'
 
 let state = {
 	currentFiles: []
@@ -167,3 +156,4 @@ window.addEventListener('keydown', (ev) => {
 		open()
 	}
 })
+

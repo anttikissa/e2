@@ -88,11 +88,13 @@ class SimpleEditor {
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
 			this.ta.value = file.replace(/( )( )/g, '\t')
-			this.ta.focus()
 		} catch (e) {
+			alert(`Could not open ${this.filename}. Save to create it.`)
 			log('open failed', e)
 			this.ta.value = ''
 		}
+
+		this.ta.focus()
 	}
 
 	close() {

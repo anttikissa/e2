@@ -85,6 +85,7 @@ export class SimpleEditor {
 			let file = fs.readFileSync(this.filename, 'utf8')
 			this.ta.value = file.replace(/( )( )/g, '\t')
 			this.fileContent = file
+			this.updateUnsaved()
 		} catch (e) {
 			alert(`Could not open ${this.filename}. Save to create it.`)
 			log('open failed', e)

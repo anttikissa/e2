@@ -4,6 +4,7 @@ let { log } = console
 
 import { el } from './util.js'
 import { SimpleEditor } from './SimpleEditor.js'
+import { Editor } from './Editor.js'
 
 let state = {
 	currentFiles: []
@@ -35,17 +36,32 @@ function open(filename) {
 	editor.open(filename)
 }
 
+// Open the new fancy editor
+function openNew(filename) {
+	let editor = new Editor(state)
+	window.editors.push(editor)
+	windows.appendChild(editor.el)
+	editor.open(filename)
+}
+
 for (let filename of state.currentFiles) {
 	open(filename)
 }
 
 window.addEventListener('keydown', (ev) => {
+log('window keydown', ev.metaKey, ev.key, ev.shiftKey)
+
 	if (ev.metaKey && ev.key === 'w') {
 		// Prevent window from closing
 		ev.preventDefault()
 	}
 
 	if (ev.metaKey && ev.key === 'o') {
-		open()
+		if (ev.shiftKey) {
+			openNew()
+		} else {
+			open()
+		}
 	}
 })
+			

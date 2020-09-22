@@ -4,12 +4,12 @@ import { el } from './util.js'
 
 let { log } = console
 
-export class SimpleEditor {
+export class Editor {
 	constructor(globalState) {
 		this.globalState = globalState
 		this.filename = null
 
-		this.el = el('div.editor')
+		this.el = el('div.editor.new')
 
 		this.input = el('input')
 
@@ -34,14 +34,18 @@ export class SimpleEditor {
 			}
 		})
 
-		this.ta = el('textarea.content')
-		this.el.appendChild(this.ta)
+		// TODO no textarea
+//		this.ta = document.createElement('textarea')
+//		this.el.appendChild(this.ta)
 
-		this.ta.addEventListener('input', ev => {
-			this.updateUnsaved()
-		})
+		this.content = el('div.content')
+		this.el.appendChild(this.content)
 
-		this.ta.setAttribute('spellcheck', 'false')
+		//this.ta.addEventListener('input', ev => {
+		//	this.updateUnsaved()
+		//})
+
+		//this.ta.setAttribute('spellcheck', 'false')
 
 		this.el.addEventListener('keydown', ev => {
 			if (ev.metaKey && ev.key === 'w') {
@@ -50,7 +54,7 @@ export class SimpleEditor {
 			}
 		})
 
-		this.ta.addEventListener('keydown', e => {
+		false && this.ta.addEventListener('keydown', e => {
 			log('keydown', e.key)
 
 			if (e.metaKey && e.key === 's') {
@@ -69,7 +73,7 @@ export class SimpleEditor {
 	}
 
 	updateUnsaved() {
-		this.el.classList.toggle('unsaved', this.ta.value !== this.fileContent)
+//		this.el.classList.toggle('unsaved', this.ta.value !== this.fileContent)
 	}
 
 	open(name = '') {
@@ -83,16 +87,16 @@ export class SimpleEditor {
 
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
-			this.ta.value = file.replace(/( )( )/g, '\t')
+//			this.ta.value = file.replace(/( )( )/g, '\t')
 			this.fileContent = file
 			this.updateUnsaved()
 		} catch (e) {
 			alert(`Could not open ${this.filename}. Save to create it.`)
 			log('open failed', e)
-			this.ta.value = ''
+//			this.ta.value = ''
 		}
 
-		this.ta.focus()
+//		this.ta.focus()
 	}
 
 	close() {
@@ -116,7 +120,9 @@ export class SimpleEditor {
 		this.el.remove()
 
 		if (editorToFocus) {
-			editorToFocus.ta && editorToFocus.ta.focus()
+// TODO should probably not depend on editor.ta?
+// change to editor.focus() directly
+//			editorToFocus.ta.focus()
 		}
 	}
 
@@ -125,8 +131,8 @@ export class SimpleEditor {
 			return
 		}
 
-		fs.writeFileSync(this.filename, this.ta.value, 'utf8')
-		this.fileContent = this.ta.value
+//		fs.writeFileSync(this.filename, this.ta.value, 'utf8')
+//		this.fileContent = this.ta.value
 		this.updateUnsaved()
 
 		alert('file ' + this.filename + ' saved!')

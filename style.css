@@ -6,6 +6,7 @@ html, body {
 
 body {
 	--gap: 3px;
+	--radius: 3px;
 }
 
 * {
@@ -88,7 +89,11 @@ body > .windows {
 	font-size: 13px;
 }
 
-.editor textarea, .editor input {
+.editor.new {
+	background: #00ff0022;
+}
+
+.editor .content, .editor input {
 	font-family: inherit;
 	font-size: inherit;
 	font-variant-ligatures: none;
@@ -98,8 +103,12 @@ body > .windows {
 	margin-top: var(--gap);
 }
 
-.editor > textarea {
+.editor > .content {
 	tab-size: 4;
 	width: 100%;
 	flex: 1;
+
+	border: 1px solid;
+	border-radius: var(--radius);
+	border-color: #777777;
 }

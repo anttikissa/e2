@@ -8,6 +8,8 @@ export class Editor {
 	constructor(globalState) {
 		this.globalState = globalState
 		this.filename = null
+		// empty buffer equals no file, fine for most purposes?
+		this.fileOnDisk = ''
 
 		this.el = el('div.editor.new')
 
@@ -34,19 +36,14 @@ export class Editor {
 			}
 		})
 
-		// TODO no textarea
-//		this.ta = document.createElement('textarea')
-//		this.el.appendChild(this.ta)
-
 		this.content = el('div.content')
 		this.content.tabIndex = 0
 		this.el.appendChild(this.content)
 
+		// TODO how to do this?
 		//this.ta.addEventListener('input', ev => {
 		//	this.updateUnsaved()
 		//})
-
-		//this.ta.setAttribute('spellcheck', 'false')
 
 		this.el.addEventListener('keydown', ev => {
 			if (ev.metaKey && ev.key === 'w') {
@@ -55,25 +52,28 @@ export class Editor {
 			}
 		})
 
-		false && this.ta.addEventListener('keydown', e => {
+		this.content.addEventListener('keydown', e => {
 			log('keydown', e.key)
 
 			if (e.metaKey && e.key === 's') {
-				this.save()
+// TODO
+//				this.save()
 			}
 
-			if (e.key === 'Tab') {
-				e.preventDefault()
-				let before = this.ta.value.substring(0, this.ta.selectionStart)
-				let endPos = this.ta.selectionEnd
-				let after = this.ta.value.substring(this.ta.selectionEnd)
-				this.ta.value = before + '\t' + after
-				this.ta.selectionStart = this.ta.selectionEnd = endPos + 1
-			}
+//			if (e.key === 'Tab') {
+//				e.preventDefault()
+//				let before = this.ta.value.substring(0, this.ta.selectionStart)
+//				let endPos = this.ta.selectionEnd
+//				let after = this.ta.value.substring(this.ta.selectionEnd)
+//				this.ta.value = before + '\t' + after
+//				this.ta.selectionStart = this.ta.selectionEnd = endPos + 1
+//			}
 		})
 	}
 
 	updateUnsaved() {
+		// TODO it's fileOnDisk
+
 //		this.el.classList.toggle('unsaved', this.ta.value !== this.fileContent)
 	}
 
@@ -88,8 +88,15 @@ export class Editor {
 
 		try {
 			let file = fs.readFileSync(this.filename, 'utf8')
-//			this.ta.value = file.replace(/( )( )/g, '\t')
-			this.fileContent = file
+			this.fileOnDisk = file
+
+			// Take away final newline
+			file = file.replace(/\n$/, '')
+			this.lines = file.split('\n')
+
+			log('!!! Editor lines', this.lines)
+
+//			this.fileContent = file
 			this.updateUnsaved()
 		} catch (e) {
 			alert(`Could not open ${this.filename}. Save to create it.`)
@@ -136,6 +143,8 @@ export class Editor {
 
 //		fs.writeFileSync(this.filename, this.ta.value, 'utf8')
 //		this.fileContent = this.ta.value
+		// it's this.fileOnDisk
+
 		this.updateUnsaved()
 
 		alert('file ' + this.filename + ' saved!')

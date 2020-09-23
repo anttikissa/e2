@@ -7,7 +7,8 @@ import { SimpleEditor } from './SimpleEditor.js'
 import { Editor } from './Editor.js'
 
 let state = {
-	currentFiles: []
+	currentFiles: [],
+	editors: []
 }
 
 try {
@@ -19,6 +20,20 @@ try {
 window.addEventListener('beforeunload', () => {
 	let files = editors.map(e => e.filename)
 	state.currentFiles = files
+
+	state.editors = editors.map(e => {
+		let type = 'unknown'
+		if (e instanceof SimpleEditor) {
+			type = 'simple'
+		} else if (e instanceof Editor) {
+			type = 'new'
+		}
+
+		return {
+			type,
+			filename: e.filename
+		}
+	})
 
 	fs.writeFileSync('.e-state', JSON.stringify(state, null, 4), 'utf8')
 })
@@ -44,8 +59,14 @@ function openNew(filename) {
 	editor.open(filename)
 }
 
-for (let filename of state.currentFiles) {
-	open(filename)
+for (let e of state.editors) {
+	if (e.type === 'simple') {
+		open(e.filename)
+	} else if (e.type === 'new') {
+		openNew(e.filename)
+	} else {
+		alert('unknown editor ' + e.type)
+	}
 }
 
 window.addEventListener('keydown', (ev) => {

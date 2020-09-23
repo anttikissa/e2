@@ -98,6 +98,7 @@ export class Editor {
 
 			log('!!! Editor lines', this.lines)
 
+			this.render()
 //			this.fileContent = file
 			this.updateUnsaved()
 		} catch (e) {
@@ -107,6 +108,12 @@ export class Editor {
 		}
 
 		this.content.focus()
+	}
+
+	render() {
+		this.content.innerHTML = ''
+
+		this.content.textContent = this.lines.join('\n')
 	}
 
 	close() {

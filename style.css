@@ -53,6 +53,11 @@ body > .windows {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+
+	/* makes the element ignore its "intrinsic width",
+	 * thus making editors equally wide */
+	min-width: 0;
+
 }
 
 .editor {
@@ -141,6 +146,11 @@ body > .windows {
 }
 
 /* New editor */
-.editor.new .content {
+.editor.new .content, .editor.new input {
 	border-style: dashed;
+}
+
+.editor.new .content {
+	white-space: pre;
+	overflow: scroll;
 }

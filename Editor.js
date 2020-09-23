@@ -39,6 +39,7 @@ export class Editor {
 //		this.el.appendChild(this.ta)
 
 		this.content = el('div.content')
+		this.content.tabIndex = 0
 		this.el.appendChild(this.content)
 
 		//this.ta.addEventListener('input', ev => {
@@ -96,7 +97,7 @@ export class Editor {
 //			this.ta.value = ''
 		}
 
-//		this.ta.focus()
+		this.content.focus()
 	}
 
 	close() {
@@ -120,10 +121,12 @@ export class Editor {
 		this.el.remove()
 
 		if (editorToFocus) {
-// TODO should probably not depend on editor.ta?
-// change to editor.focus() directly
-//			editorToFocus.ta.focus()
+			editorToFocus.focus && editorToFocus.focus()
 		}
+	}
+
+	focus() {
+		this.content.focus()
 	}
 
 	save() {

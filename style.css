@@ -89,18 +89,14 @@ body > .windows {
 	font-size: 13px;
 }
 
-.editor.new {
-	background: #00ff0022;
+.editor > *:not(:first-child) {
+	margin-top: var(--gap);
 }
 
 .editor .content, .editor input {
 	font-family: inherit;
 	font-size: inherit;
 	font-variant-ligatures: none;
-}
-
-.editor > *:not(:first-child) {
-	margin-top: var(--gap);
 }
 
 .editor > .content {
@@ -111,4 +107,19 @@ body > .windows {
 	border: 1px solid;
 	border-radius: var(--radius);
 	border-color: #777777;
+}
+
+/* Editor content focus styles */
+.editor .content:not(:focus) {
+	opacity: 0.75;
+}
+
+.editor .content:focus {
+	border: 1px solid black;
+	outline: none;
+}
+
+/* New editor */
+.editor.new .content {
+	border-style: dashed;
 }

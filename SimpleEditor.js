@@ -116,8 +116,12 @@ export class SimpleEditor {
 		this.el.remove()
 
 		if (editorToFocus) {
-			editorToFocus.ta && editorToFocus.ta.focus()
+			editorToFocus.focus && editorToFocus.focus()
 		}
+	}
+
+	focus() {
+		this.ta.focus()
 	}
 
 	save() {

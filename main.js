@@ -85,4 +85,3 @@ log('window keydown', ev.metaKey, ev.key, ev.shiftKey)
 		}
 	}
 })
-			

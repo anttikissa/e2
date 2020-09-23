@@ -15,6 +15,8 @@ export class Editor {
 
 		this.input = el('input')
 
+		this.input.setAttribute('spellcheck', 'false')
+
 		this.el.appendChild(this.input)
 		this.input.addEventListener('keydown', (ev) => {
 			if (ev.key === 'Enter') {

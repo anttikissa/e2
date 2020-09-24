@@ -10,6 +10,7 @@ body {
 	--fgcolor: white;
 	--bgcolor: black;
 	--effectcolor: #0f0;
+	--warningcolor: #f00;
 }
 
 /* basic colors */
@@ -71,7 +72,7 @@ body > .windows {
 	top: 1px;
 	padding: 0 calc(2 * var(--gap));
 	content: 'unsaved';
-	color: var(--fgcolor);
+	color: var(--warningcolor);
 
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
@@ -101,7 +102,6 @@ body > .windows {
 
 .editor.unsaved::after {
 	position: absolute;
-	color: red;
 
 	opacity: 1;
 	transition: opacity 0.25s;
@@ -137,7 +137,7 @@ body > .windows {
 
 /* Editor content focus styles */
 .editor .content:not(:focus) {
-	opacity: 0.75;
+	opacity: 0.80;
 }
 
 .editor .content:focus {
